@@ -8,7 +8,14 @@ export const Dashboard = () => {
             titulo="Dashboard"
             barraDeFerramentas={(
                 <FerramentasDeDetalhe 
-                    mostrarBotaoSalvarEVoltar
+                    mostrarBotaoVoltar
+                    
+                    mostrarBotaoNovoCarregando = {false}
+                    mostrarBotaoVoltarCarregando = {false}
+                    mostrarBotaoApagarCarregando = {false}
+                    mostrarBotaoSalvarCarregando = {false}
+                    mostrarBotaoSalvarEVoltarCarregando = {false}
+
                 />
             )}>
 
