@@ -1,0 +1,14 @@
+{
+    "bancos": [
+        {
+            "id": 1,
+            "nome": "Banco do Brasil",
+            "numero": "001"
+        },
+        {
+            "id": 2,
+            "nome": "Banco Sicredi",
+            "numero": "748"
+        }
+    ]
+}

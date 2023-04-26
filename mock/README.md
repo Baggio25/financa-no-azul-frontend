@@ -1,15 +1,13 @@
-#VENDA NO AZUL
-
 # Como usar
 
 1. Abra uma nova aba no terminal
 2. Execute o seguinte comando: 
     ```
-    yarn start
+    yarn mock
     ```
     ou
     ```
-    npm run start
+    npm run mock
     ```
 
   
