@@ -1,6 +1,6 @@
-import { Environment } from "../../../environment";
 import { Api } from "../axios-config";
-import { TBancosComTotalCount } from "../../../types/Banco";
+import { Environment } from "../../../environment";
+import { TBancosComTotalCount, TDetalheBanco } from "../../../types/Banco";
 
 const findAllByNome = async ({page = 1, filter = ""}): Promise<TBancosComTotalCount | Error> => {
     try {
@@ -21,13 +21,49 @@ const findAllByNome = async ({page = 1, filter = ""}): Promise<TBancosComTotalCo
     }
 };
 
-const findById = async (): Promise<any> => {};
+const findById = async (id: number): Promise<TDetalheBanco | Error> => {
+    try {
+        const { data } = await Api.get(`/bancos/${id}`);
 
-const create = async (): Promise<any> => {};
+        if(data) return data;        
 
-const updateById = async (): Promise<any> => {};
+        return new Error("Erro ao buscar o registro");
+    } catch (error) {
+        console.error(error);
+        return new Error((error as { message: string }).message || 'Erro ao buscar o registro.');
+    }
+};
 
-const deleteById = async (): Promise<any> => {};
+const create = async (dados: Omit<TDetalheBanco, "id">): Promise<number | Error> => {
+    try {
+        const { data } = await Api.post<TDetalheBanco>("/bancos", dados);
+
+        if(data) return data.id;        
+
+        return new Error("Erro ao criar o registro");
+    } catch (error) {
+        console.error(error);
+        return new Error((error as { message: string }).message || 'Erro ao criar o registro.');
+    }
+};
+
+const updateById = async (id: number, dados: TDetalheBanco): Promise<void | Error> => {
+    try {
+        await Api.put<TDetalheBanco>(`/bancos/${id}`, dados);
+    } catch (error) {
+        console.error(error);
+        return new Error((error as { message: string }).message || 'Erro ao atualizar o registro.');
+    }
+};
+
+const deleteById = async (id: number): Promise<void | Error> => {
+    try {
+        await Api.delete<TDetalheBanco>(`/bancos/${id}`);
+    } catch (error) {
+        console.error(error);
+        return new Error((error as { message: string }).message || 'Erro ao excluir o registro.');
+    }
+};
 
 export const BancosService = {
     findAllByNome,
