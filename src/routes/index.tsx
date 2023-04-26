@@ -1,10 +1,14 @@
 
-import Button from '@mui/material/Button';
 import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Dashboard } from '../pages';
 
 import { useDrawerContext } from '../shared/contexts';
+
+import { 
+    Dashboard, 
+    ListagemDeBancos 
+} from '../pages';
+
 
 export const AppRoutes = () => {
     const { setDrawerOptions } = useDrawerContext();
@@ -52,6 +56,9 @@ export const AppRoutes = () => {
     return (
         <Routes>
             <Route path='/dashboard' element={<Dashboard />} />
+
+            <Route path='/bancos' element={<ListagemDeBancos />} />
+            
             <Route path='*' element={<Navigate to="/dashboard" />} />
         </Routes>
     )
