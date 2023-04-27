@@ -2,7 +2,7 @@ import { Api } from "../axios-config";
 import { Environment } from "../../../environment";
 import { TBancosComTotalCount, TDetalheBanco } from "../../../types/Banco";
 
-const findAllByNome = async ({page = 1, filter = ""}): Promise<TBancosComTotalCount | Error> => {
+const findAllByNome = async (page = 1, filter = ""): Promise<TBancosComTotalCount | Error> => {
     try {
         const urlRelativa = `/bancos?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&nome_like=${filter}`;
         const { data, headers } = await Api.get(urlRelativa);

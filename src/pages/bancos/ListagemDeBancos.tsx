@@ -1,9 +1,10 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 
 import { Typography } from "@mui/material";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDaListagem } from "../../shared/components";
 import { useSearchParams } from "react-router-dom";
+import { BancosService } from "../../shared/services/api/bancos/BancosService";
 
 export const ListagemDeBancos: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -11,6 +12,19 @@ export const ListagemDeBancos: React.FC = () => {
     const busca = useMemo(() => {
         return searchParams.get("busca") || "";
     }, [searchParams]);
+
+    useEffect(() => {
+        BancosService
+            .findAllByNome(1, busca)
+            .then((result) => {
+                if(result instanceof Error) {
+                    alert(result.message);
+                    return;
+                }
+
+                console.log(result);
+            });
+    }, [busca]);
 
     return (
         <div>
