@@ -5,7 +5,7 @@ import { Environment } from "../../environment";
 interface IFerramentasDaListagem {
     textoDaBusca?: string;
     mostrarInputBusca?: boolean;
-    placeholder?: string;
+    labelInput?: string;
     aoMudarTextoDeBusca?: (novoTexto: string) => void;
     textoBotaoNovo?: string;
     mostrarBotaoNovo?: boolean;
@@ -15,7 +15,7 @@ interface IFerramentasDaListagem {
 export const FerramentasDaListagem: React.FC<IFerramentasDaListagem> = ({
     textoDaBusca = "",
     mostrarInputBusca = false,
-    placeholder = Environment.INPUT_DE_BUSCA,
+    labelInput = Environment.INPUT_DE_BUSCA,
     aoMudarTextoDeBusca,
     textoBotaoNovo = "Novo",
     mostrarBotaoNovo = true,
@@ -25,15 +25,16 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagem> = ({
     
     return (
         <Box 
-            height={theme.spacing(5)} marginX={1} 
-            padding={1} paddingX={2} display="flex" 
+            height={theme.spacing(4)} marginX={1} 
+            padding={2} paddingX={2} display="flex" 
             gap={1} alignItems="center" component={Paper}
         >
             
             { mostrarInputBusca && (
                 <TextField 
                     size="small" 
-                    placeholder={placeholder}
+                    variant="outlined"
+                    label={labelInput}
                     value={textoDaBusca}
                     onChange={(e) => aoMudarTextoDeBusca?.(e.target.value)}
                 />

@@ -1,4 +1,4 @@
-import { ListItemButton, ListItemIcon, ListItemText, Icon, Divider, List, Drawer, useTheme, Avatar, useMediaQuery} from "@mui/material";
+import { ListItemButton, ListItemIcon, ListItemText, Icon, Divider, List, Drawer, useTheme, Avatar, useMediaQuery, Typography} from "@mui/material";
 import { Box } from "@mui/system";
 
 import { ListaItemMenu } from "../lista-itens-menu/ListaItemMenu";
@@ -31,12 +31,15 @@ export const MenuLateral: React.FC<IAppThemeProviderProps> = ({children}) => {
                         width="100%" 
                         height={theme.spacing(15)} 
                         display="flex" alignItems="center" 
+                        flexDirection="column"
                         justifyContent="center">
                         
                         <Avatar 
-                            sx={{ height: theme.spacing(10),  width: theme.spacing(10) }} 
+                            sx={{ height: theme.spacing(8),  width: theme.spacing(8) }} 
                             src="https://mui.com/static/images/avatar/1.jpg"
                         />
+
+                        <Typography variant="caption" sx={{ mt: 2}}>Olá Rodrigo Baggio</Typography>
 
                     </Box>
 
