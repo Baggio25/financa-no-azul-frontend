@@ -37,6 +37,7 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagem> = ({
                     label={labelInput}
                     value={textoDaBusca}
                     onChange={(e) => aoMudarTextoDeBusca?.(e.target.value)}
+                    sx={{ flex: 1 }}
                 />
             )}
             

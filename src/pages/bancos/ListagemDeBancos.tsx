@@ -1,13 +1,15 @@
 import { useMemo, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, 
+         TableRow, TableFooter, Paper, LinearProgress, Typography } from "@mui/material";
 
 import { BancosService } from "../../shared/services/api/bancos/BancosService";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDaListagem } from "../../shared/components";
 import { useDebounce } from "../../shared/hooks";
 import { TListagemBanco } from "../../shared/types/Banco";
+import { Environment } from "../../shared/environment";
 
 export const ListagemDeBancos: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -23,20 +25,23 @@ export const ListagemDeBancos: React.FC = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        debounce(() => {            
-            BancosService
-            .findAllByNome(1, busca)
-            .then((result) => {
-                    setIsLoading(false);
 
+        debounce(() => {      
+                BancosService
+                .findAllByNomeOrNumero(1, busca)
+                .then((result) => {
+                    setIsLoading(false);
+                    
                     if(result instanceof Error) {
                         alert(result.message);
-                        return;
+                    }else{
+                        setTotalCount(result.totalCount);   
+                        setRows(result.data);
                     }
-                    setRows(result.data);
-                    setTotalCount(result.totalCount); 
+                    
                 });
         });
+
     }, [busca]);
         
     return (
@@ -46,33 +51,49 @@ export const ListagemDeBancos: React.FC = () => {
                 barraDeFerramentas={
                     <FerramentasDaListagem 
                         mostrarInputBusca
-                        labelInput="Pesquisar por nome"
+                        labelInput="Informe nome ou número"
                         textoDaBusca={busca}
                         aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto }, { replace: true })}
                     />
                 }
             >
                 <TableContainer component={Paper} sx={{ m: 1, width: "auto" }} >
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Ações</TableCell>
-                                <TableCell># </TableCell>
-                                <TableCell>Banco</TableCell>
-                                <TableCell>Número</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {rows.map(row => (
-                                <TableRow key={row.id}>
-                                    <TableCell></TableCell>
-                                    <TableCell>{row.id}</TableCell>
-                                    <TableCell>{row.nome}</TableCell>
-                                    <TableCell>{row.numero}</TableCell>
+                   
+                        <Table >
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Ações</TableCell>
+                                    <TableCell># </TableCell>
+                                    <TableCell>Nome</TableCell>
+                                    <TableCell>Número</TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHead>
+                            <TableBody>
+                                {rows.map(row => (
+                                    <TableRow key={row.id}>
+                                        <TableCell></TableCell>
+                                        <TableCell>{row.id}</TableCell>
+                                        <TableCell>{row.nome}</TableCell>
+                                        <TableCell>{row.numero}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>  
+                            
+                            {totalCount === 0 && !isLoading && (
+                                <caption>{Environment.LISTAGEM_VAZIA}</caption>
+                            )}                  
+                            
+                            <TableFooter>
+                                {isLoading && (  
+                                    <TableRow>
+                                        <TableCell colSpan={4}>
+                                                <LinearProgress variant="indeterminate" />
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableFooter>
+                        </Table>
+                    
                 </TableContainer>
             </LayoutBaseDePagina>
         </div>
