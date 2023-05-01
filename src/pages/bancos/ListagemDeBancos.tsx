@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, 
-         TableRow, TableFooter, Paper, LinearProgress, Typography } from "@mui/material";
+         TableRow, TableFooter, Paper, LinearProgress, Typography, Pagination } from "@mui/material";
 
 import { BancosService } from "../../shared/services/api/bancos/BancosService";
 import { LayoutBaseDePagina } from "../../shared/layouts";
@@ -22,27 +23,30 @@ export const ListagemDeBancos: React.FC = () => {
     const busca = useMemo(() => {
         return searchParams.get("busca") || "";
     }, [searchParams]);
+    
+    const pagina = useMemo(() => {
+        return Number(searchParams.get("pagina") || "1");
+    }, [searchParams]);
 
     useEffect(() => {
         setIsLoading(true);
 
         debounce(() => {      
                 BancosService
-                .findAllByNomeOrNumero(1, busca)
-                .then((result) => {
-                    setIsLoading(false);
-                    
-                    if(result instanceof Error) {
-                        alert(result.message);
-                    }else{
-                        setTotalCount(result.totalCount);   
-                        setRows(result.data);
-                    }
-                    
-                });
+                    .findAllByNomeOrNumero(pagina, busca)
+                        .then((result) => {
+                            setIsLoading(false);
+                            
+                            if(result instanceof Error) {
+                                alert(result.message);
+                            }else{
+                                setTotalCount(result.totalCount);   
+                                setRows(result.data);
+                            }                               
+                        });
         });
 
-    }, [busca]);
+    }, [busca, pagina]);
         
     return (
         <div>
@@ -53,7 +57,7 @@ export const ListagemDeBancos: React.FC = () => {
                         mostrarInputBusca
                         labelInput="Informe nome ou número"
                         textoDaBusca={busca}
-                        aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto }, { replace: true })}
+                        aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto, pagina: "1" }, { replace: true })}
                     />
                 }
             >
@@ -91,6 +95,21 @@ export const ListagemDeBancos: React.FC = () => {
                                         </TableCell>
                                     </TableRow>
                                 )}
+
+                                {(totalCount > 0 && totalCount > Environment.LIMITE_DE_LINHAS) && (  
+                                    <TableRow>
+                                        <TableCell colSpan={4}>
+                                                <Pagination 
+                                                    count={Math.ceil(totalCount / Environment.LIMITE_DE_LINHAS)}
+                                                    page={pagina}
+                                                    onChange={(_, newPage) => setSearchParams(
+                                                        { busca, pagina: newPage.toString() }, 
+                                                        { replace: true })
+                                                    }
+                                                />
+                                        </TableCell>
+                                    </TableRow>
+                                )}                                
                             </TableFooter>
                         </Table>
                     
