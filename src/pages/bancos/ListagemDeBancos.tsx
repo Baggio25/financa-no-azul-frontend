@@ -1,9 +1,13 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, 
-         TableRow, TableFooter, Paper, LinearProgress, Typography, Pagination } from "@mui/material";
+         TableRow, TableFooter, Paper, LinearProgress, 
+         Pagination, IconButton } from "@mui/material";
+
+import { Delete, Edit } from "@mui/icons-material";
 
 import { BancosService } from "../../shared/services/api/bancos/BancosService";
 import { LayoutBaseDePagina } from "../../shared/layouts";
@@ -15,6 +19,7 @@ import { Environment } from "../../shared/environment";
 export const ListagemDeBancos: React.FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const { debounce } = useDebounce();
+    const navigate = useNavigate();
 
     const [rows, setRows] = useState<TListagemBanco[]>([]);
     const [totalCount, setTotalCount] = useState(0);
@@ -47,6 +52,26 @@ export const ListagemDeBancos: React.FC = () => {
         });
 
     }, [busca, pagina]);
+
+    const handleDelete = (id: number) => {
+
+        if(confirm("Deseja realmente apagar?")) {
+            BancosService.deleteById(id)
+                .then(result => {
+                    if(result instanceof Error) {
+                        alert(result.message)
+                    } else {
+                        setRows(oldRows => {
+                            return[
+                                ...oldRows.filter(oldRow => oldRow.id !== id)
+                            ]
+                        })
+                        alert("Registro excluído com sucesso.")
+                    }
+                });
+        }
+
+    }
         
     return (
         <div>
@@ -61,21 +86,34 @@ export const ListagemDeBancos: React.FC = () => {
                     />
                 }
             >
-                <TableContainer component={Paper} sx={{ m: 1, width: "auto" }} >
+                <TableContainer component={Paper} sx={{ m: 1, width: "auto", height: "auto" }} >
                    
                         <Table >
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Ações</TableCell>
-                                    <TableCell># </TableCell>
-                                    <TableCell>Nome</TableCell>
-                                    <TableCell>Número</TableCell>
+                                    <TableCell width={100}>Ações</TableCell>
+                                    <TableCell width={100}># </TableCell>
+                                    <TableCell width={300}>Nome</TableCell>
+                                    <TableCell >Número</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {rows.map(row => (
-                                    <TableRow key={row.id}>
-                                        <TableCell></TableCell>
+                                    <TableRow key={row.id} > 
+                                        <TableCell>
+                                            <IconButton 
+                                                size="small" 
+                                                onClick={() => handleDelete(row.id)}
+                                            >
+                                                <Delete fontSize="small" />
+                                            </IconButton>
+                                            <IconButton 
+                                                size="small" 
+                                                onClick={() => navigate(`/bancos/detalhe/${row.id}`)}
+                                            >
+                                                <Edit fontSize="small" />
+                                            </IconButton>
+                                        </TableCell>
                                         <TableCell>{row.id}</TableCell>
                                         <TableCell>{row.nome}</TableCell>
                                         <TableCell>{row.numero}</TableCell>

@@ -1,34 +1,29 @@
 {
-    "bancos": [
-        {
-            "id": 1,
-            "nome": "Banco do Brasil",
-            "numero": "001"
-        },
-        {
-            "id": 2,
-            "nome": "Banco Sicredi",
-            "numero": "748"
-        },
-        {
-            "id": 3,
-            "nome": "Banco Sicoob",
-            "numero": "756"
-        },
-        {
-            "id": 4,
-            "nome": "Banco Evolua",
-            "numero": "085"
-        },
-        {
-            "id": 5,
-            "nome": "Banco Bradesco",
-            "numero": "237"
-        },
-        {
-            "id": 6,
-            "nome": "Banco Santander",
-            "numero": "033"
-        }
-    ]
+  "bancos": [
+    {
+      "id": 2,
+      "nome": "Banco Sicredi",
+      "numero": "748"
+    },
+    {
+      "id": 3,
+      "nome": "Banco Sicoob",
+      "numero": "756"
+    },
+    {
+      "id": 4,
+      "nome": "Banco Evolua",
+      "numero": "085"
+    },
+    {
+      "id": 5,
+      "nome": "Banco Bradesco",
+      "numero": "237"
+    },
+    {
+      "id": 6,
+      "nome": "Banco Santander",
+      "numero": "033"
+    }
+  ]
 }
