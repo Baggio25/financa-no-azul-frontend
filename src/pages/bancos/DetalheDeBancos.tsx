@@ -3,6 +3,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 import { Box, Paper } from "@mui/material";
 import { Form } from "@unform/web";
@@ -36,33 +38,66 @@ export const DetalheDeBancos = () => {
                     setIsLoading(false);
 
                     if(result instanceof Error) {
-                        alert(result.message);
                         navigate("/bancos");
+                        toast.error(result.message);                        
                     }else {
                         setNome(result.nome);
-                        console.log(result);
+                        formRef.current?.setData(result);
                     }
                 })
         }
+
     }, [id]);
 
-
     const handleSave = (dados: IFormData) => {
-        console.log(dados);
+        setIsLoading(true);
+        
+        if(id === "novo") {
+            BancosService
+                .create(dados)
+                .then((result) => {
+                    setIsLoading(false);
+
+                    if(result instanceof Error) {
+                        toast.error(result.message);
+                    }else {
+                        navigate(`/bancos/detalhe/${result}`)
+                        toast.success("Banco salvo com sucesso!");
+                    }
+                });
+            }else {
+                BancosService
+                .updateById(Number(id), {id: Number(id), ...dados})
+                .then((result) => {
+                    setIsLoading(false);
+                    
+                    if(result instanceof Error) {
+                        toast.error(result.message);
+                    }else {
+                        toast.success("Banco alterado com sucesso!");
+                    }
+                });
+        }
     }
+
 
     const handleDelete = (id: number) => {
         if(confirm("Deseja realmente apagar?")) {
             BancosService.deleteById(id)
                 .then(result => {
                     if(result instanceof Error) {
-                        alert(result.message)
+                        toast.error(result.message);
                     } else {
-                        alert("Registro excluído com sucesso.")
+                        toast.success("Registro excluído com sucesso.")
                         navigate("/bancos");
                     }
                 });
         }
+    }
+
+    const handleClear = () => {
+        formRef.current?.reset();
+        navigate("/bancos/detalhe/novo");
     }
 
     return(
@@ -77,7 +112,7 @@ export const DetalheDeBancos = () => {
                     aoClicarEmSalvar={() => formRef.current?.submitForm()}
                     aoClicarEmSalvarEVoltar={() => formRef.current?.submitForm()}
                     aoClicarEmApagar={() => handleDelete(Number(id))}
-                    aoClicarEmNovo={() => navigate("/bancos/detalhe/novo")}
+                    aoClicarEmNovo={() => handleClear()}
                     aoClicarEmVoltar={() => navigate("/bancos")}
                 />
             }

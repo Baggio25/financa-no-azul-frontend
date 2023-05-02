@@ -2,6 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useMemo, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, 
          TableRow, TableFooter, Paper, LinearProgress, 
@@ -43,7 +44,7 @@ export const ListagemDeBancos: React.FC = () => {
                             setIsLoading(false);
                             
                             if(result instanceof Error) {
-                                alert(result.message);
+                                toast.error(result.message);
                             }else{
                                 setTotalCount(result.totalCount);   
                                 setRows(result.data);
@@ -65,7 +66,8 @@ export const ListagemDeBancos: React.FC = () => {
                                 ...oldRows.filter(oldRow => oldRow.id !== id)
                             ]
                         })
-                        alert("Registro excluído com sucesso.")
+                        navigate("/bancos");
+                        toast.success("Registro excluído com sucesso.");
                     }
                 });
         }

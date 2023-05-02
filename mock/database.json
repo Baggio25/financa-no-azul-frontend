@@ -1,13 +1,8 @@
 {
   "bancos": [
     {
-      "id": 3,
-      "nome": "Banco Sicoob",
-      "numero": "756"
-    },
-    {
       "id": 4,
-      "nome": "Banco Evolua",
+      "nome": "Banco Evolua 1",
       "numero": "085"
     },
     {
@@ -19,6 +14,16 @@
       "id": 6,
       "nome": "Banco Santander",
       "numero": "033"
+    },
+    {
+      "id": 7,
+      "nome": "Banco Sicoob",
+      "numero": "756"
+    },
+    {
+      "id": 8,
+      "nome": "Banco Sicredi",
+      "numero": "748"
     }
   ]
 }

@@ -1,4 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import { AppRoutes } from "./routes";
 import { MenuLateral } from "./shared/components";
@@ -13,6 +14,7 @@ export const App = () => {
 
           <MenuLateral>
             <AppRoutes />
+            <ToastContainer autoClose={3000} />
           </MenuLateral>
 
         </BrowserRouter>
