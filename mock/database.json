@@ -1,11 +1,6 @@
 {
   "bancos": [
     {
-      "id": 2,
-      "nome": "Banco Sicredi",
-      "numero": "748"
-    },
-    {
       "id": 3,
       "nome": "Banco Sicoob",
       "numero": "756"

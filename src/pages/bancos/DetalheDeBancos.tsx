@@ -1,5 +1,10 @@
+/* eslint-disable no-restricted-globals */
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { LinearProgress } from "@mui/material";
+
+import { BancosService } from "../../shared/services/api/bancos/BancosService";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDeDetalhe } from "../../shared/components";
 
@@ -7,18 +12,50 @@ export const DetalheDeBancos = () => {
     const { id = "novo" }  = useParams<"id">();
     const navigate = useNavigate();
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [nome, setNome] = useState("");
+
+    useEffect(() => {
+        if(id !== "novo") {
+            setIsLoading(true);
+
+            BancosService.findById(Number(id))
+                .then((result) => {
+                    setIsLoading(false);
+
+                    if(result instanceof Error) {
+                        alert(result.message);
+                        navigate("/bancos");
+                    }else {
+                        setNome(result.nome);
+                        console.log(result);
+                    }
+                })
+        }
+    }, [id]);
+
+
     const handleSave = () => {
 
     }
 
-    const handleDelete = () => {
-
+    const handleDelete = (id: number) => {
+        if(confirm("Deseja realmente apagar?")) {
+            BancosService.deleteById(id)
+                .then(result => {
+                    if(result instanceof Error) {
+                        alert(result.message)
+                    } else {
+                        alert("Registro excluído com sucesso.")
+                        navigate("/bancos");
+                    }
+                });
+        }
     }
-
 
     return(
         <LayoutBaseDePagina
-            titulo="Detalhe de Banco"
+            titulo={id === "novo" ? "Novo Banco" : nome }
             barraDeFerramentas={
                 <FerramentasDeDetalhe 
                     mostrarBotaoSalvarEVoltar
@@ -27,12 +64,15 @@ export const DetalheDeBancos = () => {
 
                     aoClicarEmSalvar={() => handleSave()}
                     aoClicarEmSalvarEVoltar={() => handleSave()}
-                    aoClicarEmApagar={() => handleDelete()}
+                    aoClicarEmApagar={() => handleDelete(Number(id))}
                     aoClicarEmNovo={() => navigate("/bancos/detalhe/novo")}
                     aoClicarEmVoltar={() => navigate("/bancos")}
                 />
             }
         >
+            {isLoading && (
+                <LinearProgress variant="indeterminate" />
+            )}
 
         </LayoutBaseDePagina>
     )
