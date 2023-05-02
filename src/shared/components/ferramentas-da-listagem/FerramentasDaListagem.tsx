@@ -48,6 +48,7 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagem> = ({
                         color="primary"
                         endIcon={<Icon>add</Icon>}
                         onClick={aoClicarEmNovo}
+                        size="small"
                     >
                         {textoBotaoNovo}
                     </Button>

@@ -54,7 +54,6 @@ export const ListagemDeBancos: React.FC = () => {
     }, [busca, pagina]);
 
     const handleDelete = (id: number) => {
-
         if(confirm("Deseja realmente apagar?")) {
             BancosService.deleteById(id)
                 .then(result => {
@@ -70,7 +69,6 @@ export const ListagemDeBancos: React.FC = () => {
                     }
                 });
         }
-
     }
         
     return (
@@ -82,6 +80,7 @@ export const ListagemDeBancos: React.FC = () => {
                         mostrarInputBusca
                         labelInput="Informe nome ou número"
                         textoDaBusca={busca}
+                        aoClicarEmNovo={() => navigate("/bancos/detalhe/novo")}
                         aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto, pagina: "1" }, { replace: true })}
                     />
                 }

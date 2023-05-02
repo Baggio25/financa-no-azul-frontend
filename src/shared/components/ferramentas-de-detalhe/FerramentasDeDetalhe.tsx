@@ -62,6 +62,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
                     color="primary"
                     startIcon={<Icon>save</Icon>}
                     onClick={aoClicarEmSalvar}
+                    size="small"
                 >
                     <Typography variant="button" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
                         Salvar
@@ -79,6 +80,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
                     color="primary"
                     startIcon={<Icon>check</Icon>}
                     onClick={aoClicarEmSalvarEVoltar}
+                    size="small"
                 >
                     <Typography variant="button" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
                         Salvar e Voltar
@@ -92,10 +94,11 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
 
             {(mostrarBotaoApagar && !mostrarBotaoApagarCarregando) && (
                 <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<Icon>delete</Icon>}
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<Icon>delete</Icon>}
                     onClick={aoClicarEmApagar}
+                    size="small"
                 >
                     <Typography variant="button" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
                         Apagar
@@ -113,6 +116,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
                     color="primary"
                     startIcon={<Icon>add</Icon>}
                     onClick={aoClicarEmNovo}
+                    size="small"
                 >
                     <Typography variant="button" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
                         {textoBotaoNovo}
@@ -133,10 +137,11 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
             
             {(mostrarBotaoVoltar && !mostrarBotaoVoltarCarregando) && (
                 <Button
-                variant="outlined"
-                color="primary"
-                startIcon={<Icon>arrow_back</Icon>}
-                onClick={aoClicarEmVoltar}
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<Icon>arrow_back</Icon>}
+                    onClick={aoClicarEmVoltar}
+                    size="small"
                 >
                     {!smDown && (
                         <Typography variant="button" whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">

@@ -6,6 +6,7 @@ import { useDrawerContext } from '../shared/contexts';
 
 import { 
     Dashboard, 
+    DetalheDeBancos, 
     ListagemDeBancos 
 } from '../pages';
 
@@ -58,7 +59,7 @@ export const AppRoutes = () => {
             <Route path='/dashboard' element={<Dashboard />} />
 
             <Route path='/bancos' element={<ListagemDeBancos />} />
-            <Route path='/bancos/detalhe/:id' element={<p>Cadastro de Bancos</p>} />
+            <Route path='/bancos/detalhe/:id' element={<DetalheDeBancos />} />
             
             <Route path='*' element={<Navigate to="/dashboard" />} />
         </Routes>
