@@ -51,7 +51,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
 
     return(
         <Box 
-            height={theme.spacing(5)} marginX={1} 
+            height={theme.spacing(5)} marginX={1} variant="outlined"
             padding={1} paddingX={2} display="flex" 
             gap={1} alignItems="center" component={Paper}
         >

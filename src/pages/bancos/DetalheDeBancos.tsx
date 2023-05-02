@@ -5,8 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-
-import { Box, Paper } from "@mui/material";
+import { Box, Divider, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import { Form } from "@unform/web";
 import { FormHandles } from "@unform/core";
 
@@ -117,25 +116,58 @@ export const DetalheDeBancos = () => {
                 />
             }
         >
-            <Box component={Paper} sx={{ m: 1, p: 1, width: "auto", height: "auto" }}>
-                <Form 
-                    onSubmit={handleSave}
-                    ref={formRef}
+            <Form 
+                onSubmit={handleSave}
+                ref={formRef}
+            >
+                <Box 
+                    component={Paper} 
+                    margin={1} 
+                    display="flex" 
+                    flexDirection="column"
+                    variant="outlined"
                 >
-                    <VTextField 
-                        name="nome" 
-                        label="Banco" 
-                        autoFocus
-                        sx={{ mr: 1, width: 400 }}
-                    />
-                
-                    <VTextField 
-                        name="numero" 
-                        label="Número" 
-                    />
-                    
-                </Form>
-            </Box>
+                    <Grid 
+                        container 
+                        spacing={2} 
+                        direction="column" 
+                        padding={2}
+                    >
+                        {isLoading && (
+                            <Grid item >
+                                <LinearProgress variant="indeterminate" />
+                            </Grid>
+                        )}
+
+                        <Grid item sx={{ mb: 1 }}>
+                            <Typography>Dados Principais</Typography>
+                            <Divider />
+                        </Grid>                        
+
+                        <Grid container item direction="row" spacing={2} >
+                            <Grid item xs={12} sm={6} >
+                                <VTextField 
+                                    name="nome" 
+                                    label="Banco" 
+                                    autoFocus
+                                    fullWidth
+                                    disabled={isLoading}
+                                    onChange={e => setNome(e.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4} >
+                                <VTextField 
+                                    name="numero" 
+                                    label="Número" 
+                                    fullWidth
+                                    disabled={isLoading}
+                                />
+                            </Grid>   
+                        </Grid>
+                    </Grid>                    
+                </Box>
+            </Form>
+
         </LayoutBaseDePagina>
     )
 }

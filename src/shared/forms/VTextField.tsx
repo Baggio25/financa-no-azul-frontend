@@ -38,8 +38,8 @@ export const VTextField = ({ name, ...rest }: TVTextFieldProps) => {
             helperText={error}
             defaultValue={defaultValue}
 
-            onKeyDown={() => error ? clearError() : undefined}
-            onChange={e => setValue(e.target.value)}
+            onChange={e => {setValue(e.target.value); rest.onChange?.(e)}}
+            onKeyDown={(e) => { error && clearError(); rest.onKeyDown?.(e) }}
         />
     )
 }
