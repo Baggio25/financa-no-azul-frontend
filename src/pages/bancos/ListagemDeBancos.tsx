@@ -78,7 +78,7 @@ export const ListagemDeBancos: React.FC = () => {
                 barraDeFerramentas={
                     <FerramentasDaListagem 
                         mostrarInputBusca
-                        labelInput="Informe nome ou número"
+                        labelInput="Informe o banco ou número..."
                         textoDaBusca={busca}
                         aoClicarEmNovo={() => navigate("/bancos/detalhe/novo")}
                         aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto, pagina: "1" }, { replace: true })}
@@ -92,7 +92,7 @@ export const ListagemDeBancos: React.FC = () => {
                                 <TableRow>
                                     <TableCell width={100}>Ações</TableCell>
                                     <TableCell width={100}># </TableCell>
-                                    <TableCell width={300}>Nome</TableCell>
+                                    <TableCell width={300}>Banco</TableCell>
                                     <TableCell >Número</TableCell>
                                 </TableRow>
                             </TableHead>
