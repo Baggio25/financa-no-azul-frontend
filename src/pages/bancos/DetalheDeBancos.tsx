@@ -1,12 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-restricted-globals */
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { LinearProgress } from "@mui/material";
+import { Form } from "@unform/web";
 
 import { BancosService } from "../../shared/services/api/bancos/BancosService";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDeDetalhe } from "../../shared/components";
+import { VTextField } from "../../shared/forms";
+
 
 export const DetalheDeBancos = () => {
     const { id = "novo" }  = useParams<"id">();
@@ -70,10 +74,14 @@ export const DetalheDeBancos = () => {
                 />
             }
         >
-            {isLoading && (
-                <LinearProgress variant="indeterminate" />
-            )}
-
+            <Form 
+                onSubmit={console.log}
+            >
+                <VTextField 
+                    name="nome" 
+                    label="Teste" 
+                />
+            </Form>
         </LayoutBaseDePagina>
     )
 }
