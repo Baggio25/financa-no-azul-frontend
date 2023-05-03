@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import * as yup from "yup";
 
 import { Box, Divider, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 
@@ -16,6 +17,11 @@ interface IFormData {
     nome: string;
     numero: string;
 }
+
+const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
+    nome: yup.string().required().min(3),
+    numero: yup.string().required().max(3)
+});
 
 export const DetalheDeBancos = () => {
     const { id = "novo" }  = useParams<"id">();
@@ -52,42 +58,50 @@ export const DetalheDeBancos = () => {
     }, [id]);
 
     const handleSave = (dados: IFormData) => {
+
         setIsLoading(true);
         
-        if(id === "novo") {
-            BancosService
-                .create(dados)
-                .then((result) => {
-                    setIsLoading(false);
-
-                    if(result instanceof Error) {
-                        toast.error(result.message);
+        formValidationSchema.validate(dados, { abortEarly: false })
+            .then((dadosValidados) => {
+                if(id === "novo") {
+                    BancosService
+                        .create(dados)
+                        .then((result) => {
+                            setIsLoading(false);
+        
+                            if(result instanceof Error) {
+                                toast.error(result.message);
+                            }else {
+                                if(isSaveAndClose()) {
+                                    navigate("/bancos");
+                                }else {
+                                    navigate(`/bancos/detalhe/${result}`)
+                                }
+        
+                                toast.success("Banco salvo com sucesso!");
+                            }
+                        });
                     }else {
-                        if(isSaveAndClose()) {
-                            navigate("/bancos");
-                        }else {
-                            navigate(`/bancos/detalhe/${result}`)
-                        }
+                        BancosService
+                        .updateById(Number(id), {id: Number(id), ...dados})
+                        .then((result) => {
+                            setIsLoading(false);
+                            
+                            if(result instanceof Error) {
+                                toast.error(result.message);
+                            }else {
+                                if(isSaveAndClose()) {
+                                    navigate("/bancos");
+                                }
+                                toast.success("Banco alterado com sucesso!");
+                            }
+                        });
+                }
+            })
+            .catch(() => {
 
-                        toast.success("Banco salvo com sucesso!");
-                    }
-                });
-            }else {
-                BancosService
-                .updateById(Number(id), {id: Number(id), ...dados})
-                .then((result) => {
-                    setIsLoading(false);
-                    
-                    if(result instanceof Error) {
-                        toast.error(result.message);
-                    }else {
-                        if(isSaveAndClose()) {
-                            navigate("/bancos");
-                        }
-                        toast.success("Banco alterado com sucesso!");
-                    }
-                });
-        }
+            });
+
     }
 
     const handleDelete = (id: number) => {
