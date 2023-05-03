@@ -1,18 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-restricted-globals */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { Box, Divider, Grid, LinearProgress, Paper, Typography } from "@mui/material";
-import { Form } from "@unform/web";
-import { FormHandles } from "@unform/core";
 
 import { BancosService } from "../../shared/services/api/bancos/BancosService";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDeDetalhe } from "../../shared/components";
-import { VTextField } from "../../shared/forms";
+import { VTextField, VForm, useVForm } from "../../shared/forms";
 
 interface IFormData {
     nome: string;
@@ -23,7 +21,7 @@ export const DetalheDeBancos = () => {
     const { id = "novo" }  = useParams<"id">();
     const navigate = useNavigate();
 
-    const formRef = useRef<FormHandles>(null);
+    const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
 
     const [isLoading, setIsLoading] = useState(false);
     const [nome, setNome] = useState("");
@@ -44,6 +42,11 @@ export const DetalheDeBancos = () => {
                         formRef.current?.setData(result);
                     }
                 })
+        }else {
+            formRef.current?.setData({
+                nome: "",
+                numero: ""
+            })
         }
 
     }, [id]);
@@ -60,7 +63,12 @@ export const DetalheDeBancos = () => {
                     if(result instanceof Error) {
                         toast.error(result.message);
                     }else {
-                        navigate(`/bancos/detalhe/${result}`)
+                        if(isSaveAndClose()) {
+                            navigate("/bancos");
+                        }else {
+                            navigate(`/bancos/detalhe/${result}`)
+                        }
+
                         toast.success("Banco salvo com sucesso!");
                     }
                 });
@@ -73,12 +81,14 @@ export const DetalheDeBancos = () => {
                     if(result instanceof Error) {
                         toast.error(result.message);
                     }else {
+                        if(isSaveAndClose()) {
+                            navigate("/bancos");
+                        }
                         toast.success("Banco alterado com sucesso!");
                     }
                 });
         }
     }
-
 
     const handleDelete = (id: number) => {
         if(confirm("Deseja realmente apagar?")) {
@@ -94,8 +104,7 @@ export const DetalheDeBancos = () => {
         }
     }
 
-    const handleClear = () => {
-        formRef.current?.reset();
+    const handleNew = () => {
         navigate("/bancos/detalhe/novo");
     }
 
@@ -108,15 +117,15 @@ export const DetalheDeBancos = () => {
                     mostrarBotaoNovo={id !== "novo"}
                     mostrarBotaoApagar={id !== "novo"}
 
-                    aoClicarEmSalvar={() => formRef.current?.submitForm()}
-                    aoClicarEmSalvarEVoltar={() => formRef.current?.submitForm()}
+                    aoClicarEmSalvar={save}
+                    aoClicarEmSalvarEVoltar={saveAndClose}
                     aoClicarEmApagar={() => handleDelete(Number(id))}
-                    aoClicarEmNovo={() => handleClear()}
+                    aoClicarEmNovo={() => handleNew()}
                     aoClicarEmVoltar={() => navigate("/bancos")}
                 />
             }
         >
-            <Form 
+            <VForm  
                 onSubmit={handleSave}
                 ref={formRef}
             >
@@ -166,7 +175,7 @@ export const DetalheDeBancos = () => {
                         </Grid>
                     </Grid>                    
                 </Box>
-            </Form>
+            </VForm>
 
         </LayoutBaseDePagina>
     )
