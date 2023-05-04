@@ -9,7 +9,9 @@ interface IFerramentasDaListagem {
     aoMudarTextoDeBusca?: (novoTexto: string) => void;
     textoBotaoNovo?: string;
     mostrarBotaoNovo?: boolean;
+    mostrarBotaoExportarPDF?: boolean;
     aoClicarEmNovo?: () => void;
+    aoClicarEmExportarPDF?: () => void;
 }
 
 export const FerramentasDaListagem: React.FC<IFerramentasDaListagem> = ({
@@ -19,7 +21,9 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagem> = ({
     aoMudarTextoDeBusca,
     textoBotaoNovo = "Novo",
     mostrarBotaoNovo = true,
-    aoClicarEmNovo
+    mostrarBotaoExportarPDF = true,
+    aoClicarEmNovo,
+    aoClicarEmExportarPDF
 }) => {
     const theme = useTheme();
     
@@ -41,7 +45,18 @@ export const FerramentasDaListagem: React.FC<IFerramentasDaListagem> = ({
                 />
             )}
             
-            <Box flex={1} display="flex" justifyContent="end">
+            <Box flex={1} gap={1} display="flex" justifyContent="end">
+                {mostrarBotaoExportarPDF && (
+                    <Button 
+                        variant="outlined"
+                        color="primary"
+                        endIcon={<Icon>picture_as_pdf</Icon>}
+                        onClick={aoClicarEmExportarPDF}
+                        size="small"
+                    >
+                        Exportar
+                    </Button>
+                )}
                 {mostrarBotaoNovo && (
                     <Button 
                         variant="contained"

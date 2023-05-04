@@ -83,6 +83,7 @@ export const ListagemDeBancos: React.FC = () => {
                         labelInput="Informe o banco ou número..."
                         textoDaBusca={busca}
                         aoClicarEmNovo={() => navigate("/bancos/detalhe/novo")}
+                        aoClicarEmExportarPDF={() => toast.warn("Exportado para PDF")}
                         aoMudarTextoDeBusca={texto => setSearchParams({ busca: texto, pagina: "1" }, { replace: true })}
                     />
                 }
