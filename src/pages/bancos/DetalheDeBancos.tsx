@@ -11,7 +11,7 @@ import { Box, Divider, Grid, LinearProgress, Paper, Typography } from "@mui/mate
 import { BancosService } from "../../shared/services/api/bancos/BancosService";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { FerramentasDeDetalhe } from "../../shared/components";
-import { VTextField, VForm, useVForm } from "../../shared/forms";
+import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 
 interface IFormData {
     nome: string;
@@ -20,7 +20,7 @@ interface IFormData {
 
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
     nome: yup.string().required().min(3),
-    numero: yup.string().required().max(3)
+    numero: yup.string().required().max(3).matches(/^\d+$/, "Deve ser informado apenas números")
 });
 
 export const DetalheDeBancos = () => {
@@ -59,10 +59,9 @@ export const DetalheDeBancos = () => {
 
     const handleSave = (dados: IFormData) => {
 
-        setIsLoading(true);
-        
         formValidationSchema.validate(dados, { abortEarly: false })
-            .then((dadosValidados) => {
+        .then((dadosValidados) => {
+                setIsLoading(true);
                 if(id === "novo") {
                     BancosService
                         .create(dados)
@@ -98,8 +97,16 @@ export const DetalheDeBancos = () => {
                         });
                 }
             })
-            .catch(() => {
+            .catch((errors: yup.ValidationError) => {
+                const validationErrors: IVFormErrors = {};
+                
+                errors.inner.forEach(error => {
+                    if(!error.path) return;
 
+                    validationErrors[error.path] = error.message;
+                });
+
+                formRef.current?.setErrors(validationErrors);
             });
 
     }
