@@ -20,7 +20,11 @@ interface IFormData {
 
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
     nome: yup.string().required().min(3),
-    numero: yup.string().required().max(3).matches(/^\d+$/, "Deve ser informado apenas números")
+    numero: yup.string()
+                .required()
+                .max(3, "Deve possuir 3 caracteres")
+                .min(3, "Deve possuir 3 caracteres")
+                .matches(/^\d+$/, "Deve ser informado apenas números")
 });
 
 export const DetalheDeBancos = () => {
@@ -64,7 +68,7 @@ export const DetalheDeBancos = () => {
                 setIsLoading(true);
                 if(id === "novo") {
                     BancosService
-                        .create(dados)
+                        .create(dadosValidados)
                         .then((result) => {
                             setIsLoading(false);
         
@@ -82,7 +86,7 @@ export const DetalheDeBancos = () => {
                         });
                     }else {
                         BancosService
-                        .updateById(Number(id), {id: Number(id), ...dados})
+                        .updateById(Number(id), {id: Number(id), ...dadosValidados})
                         .then((result) => {
                             setIsLoading(false);
                             
