@@ -30,5 +30,31 @@
       "nome": "Banco do Brasil",
       "numero": "001"
     }
+  ],
+  "contas": [
+    {
+      "id": 1,
+      "descricao": "Conta Sicredi - 18838-7",
+      "tipo": "BANCARIA",
+      "saldo": 1900.25,
+      "dataAlteracao": "",
+      "numero": "18838",
+      "digito": "7",
+      "agencia": "0740",
+      "digitoAgencia": "x",
+      "bancoId": 8
+    },
+    {
+      "id": 2,
+      "descricao": "Conta Caixa",
+      "tipo": "FINANCEIRA",
+      "saldo": 500.52,
+      "dataAlteracao": "",
+      "numero": "",
+      "digito": "",
+      "agencia": "",
+      "digitoAgencia": "",
+      "bancoId": null 
+    }
   ]
 }
