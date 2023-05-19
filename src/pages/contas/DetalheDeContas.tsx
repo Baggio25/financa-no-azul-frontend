@@ -17,54 +17,59 @@ import { TTipoConta } from "../../shared/types/Conta";
 interface IFormData {
     descricao: string;
     tipo: TTipoConta;
-    dataAlteracao: Date;
-    numero: string;
-    digito: string;
-    agencia: string;
-    digitoAgencia: string;
-    bancoId: number;
+    numero?: string; 
+    digito?: string; 
+    agencia?: string; 
+    digitoAgencia?: string; 
+    
 }
 
-/*const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
+const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
     descricao: yup.string().required().min(3),
-    dataCriacao: yup.string().required().min(3),
-    
-});*/
+    numero: yup.string()
+                .optional()
+                .matches(/^\d+$/, "Deve ser informado apenas números"),    
+    tipo: yup.string<TTipoConta>().defined(),
+    digito: yup.string()
+                .optional()
+                .matches(/^\d+$/, "Deve ser informado apenas números"),
+    agencia: yup.string()
+                .optional()
+                .matches(/^\d+$/, "Deve ser informado apenas números"),
+    digitoAgencia: yup.string()
+                .optional()
+                .matches(/^\d+$/, "Deve ser informado apenas números"),
+});
 
-export const DetalheDeContas = () => {
-    const { id = "nova" }  = useParams<"id">();
+export const DetalheDeBancos = () => {
+    const { id = "novo" }  = useParams<"id">();
     const navigate = useNavigate();
 
     const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
 
     const [isLoading, setIsLoading] = useState(false);
-    const [descricao, setDescricao] = useState("");
+    const [nome, setNome] = useState("");
 
     useEffect(() => {
-        if(id !== "nova") {
+        if(id !== "novo") {
             setIsLoading(true);
 
-            ContasService.findById(Number(id))
+            BancosService.findById(Number(id))
                 .then((result) => {
                     setIsLoading(false);
 
                     if(result instanceof Error) {
-                        navigate("/contas");
+                        navigate("/bancos");
                         toast.error(result.message);                        
                     }else {
-                        setDescricao(result.descricao);
+                        setNome(result.nome);
                         formRef.current?.setData(result);
                     }
                 })
         }else {
             formRef.current?.setData({
-                descricao: "",
-                tipo: "FINANCEIRA",
-                numero: "",
-                digito: "",
-                agencia: "",
-                digitoAgencia: "",
-                bancoId: null,
+                nome: "",
+                numero: ""
             })
         }
 

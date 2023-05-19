@@ -6,7 +6,6 @@ export type TDetalheContas = {
     descricao: string;
     tipo: TTipoConta;
     saldo: number;
-    dataAlteracao: Date;
     numero: string;
     digito: string;
     agencia: string;
